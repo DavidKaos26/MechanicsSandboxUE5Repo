@@ -17,3 +17,14 @@ void UQuestComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActor
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 }
 
+void UQuestComponent::SetCurrentQuest(UQuestData* NewQuest)
+{
+	CurrentQuest = NewQuest;
+}
+
+UQuestData* UQuestComponent::GetCurrentQuest()
+{
+	return CurrentQuest;
+}
+
+

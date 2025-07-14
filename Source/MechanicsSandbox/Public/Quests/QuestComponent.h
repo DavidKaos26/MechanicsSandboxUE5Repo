@@ -2,6 +2,7 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
+#include "Data/QuestData.h"
 #include "QuestComponent.generated.h"
 
 
@@ -11,13 +12,21 @@ class MECHANICSSANDBOX_API UQuestComponent : public UActorComponent
 	GENERATED_BODY()
 
 public:	
-	UQuestComponent();
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UQuestData* CurrentQuest;
 
 protected:
 	virtual void BeginPlay() override;
 
 public:	
+	UQuestComponent();
+
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
+	UFUNCTION(BlueprintCallable)
+	UQuestData* GetCurrentQuest();
+
+	UFUNCTION(BlueprintCallable)
+	void SetCurrentQuest(UQuestData* NewQuest);
 		
 };
