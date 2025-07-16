@@ -2,6 +2,7 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
 #include "Quests/QuestComponent.h"
+#include "Combat/CombatComponent.h"
 
 
 APlayerCharacter::APlayerCharacter()
@@ -19,6 +20,7 @@ APlayerCharacter::APlayerCharacter()
 
 	//Actor Components
 	QuestComp = CreateDefaultSubobject<UQuestComponent>(TEXT("Quest Component"));
+	CombatComp = CreateDefaultSubobject<UCombatComponent>(TEXT("Combat Component"));
 }
 
 void APlayerCharacter::BeginPlay()
@@ -32,6 +34,7 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
 	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ACharacter::Jump);
+	PlayerInputComponent->BindAction("Attack", IE_Pressed, this, &APlayerCharacter::Attack);
 
 	PlayerInputComponent->BindAxis("MoveForward", this, &APlayerCharacter::MoveForward);
 	PlayerInputComponent->BindAxis("MoveRight", this, &APlayerCharacter::MoveRight);
@@ -75,6 +78,14 @@ void APlayerCharacter::Turn(float Value)
 void APlayerCharacter::LookUp(float Value)
 {
 	AddControllerPitchInput(Value);
+}
+
+void APlayerCharacter::Attack()
+{
+	if (CombatComp)
+	{
+		CombatComp->ComboAttack();
+	}
 }
 
 

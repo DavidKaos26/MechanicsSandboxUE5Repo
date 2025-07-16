@@ -5,6 +5,7 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
 #include "Quests/QuestComponent.h"
+#include "Combat/CombatComponent.h"
 #include "PlayerCharacter.generated.h"
 
 UCLASS()
@@ -24,6 +25,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Actor Components")
 	UQuestComponent* QuestComp;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Actor Components")
+	UCombatComponent* CombatComp;
+
 protected:
 	virtual void BeginPlay() override;
 
@@ -31,6 +35,7 @@ protected:
 	void MoveRight(float Value);
 	void Turn(float Value);
 	void LookUp(float Value);
+	void Attack();
 
 public:	
 	virtual void Tick(float DeltaTime) override;
