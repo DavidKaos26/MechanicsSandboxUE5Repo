@@ -4,8 +4,14 @@
 #include "Components/ActorComponent.h"
 #include "Combat/WeaponActor.h"
 #include "Animation/AnimMontage.h"
+#include "GameFramework/Character.h"
 #include "CombatComponent.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_SPARSE_DELEGATE_OneParam(
+	FOnWeaponAssignedSignature,
+	UCombatComponent, OnWeaponAssignedDelegate,
+	AWeaponActor*, Weapon
+);
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class MECHANICSSANDBOX_API UCombatComponent : public UActorComponent
@@ -24,9 +30,15 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TArray<UAnimMontage*> AttackMontages;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float AnimationsPlayRate = 1.5f;
+
+	UPROPERTY(BlueprintAssignable)
+	FOnWeaponAssignedSignature OnWeaponAssignedDelegate;
+
 	int ComboCounter { 0 };
 
-	class APlayerCharacter* CharacterRef;
+	ACharacter* CharacterRef;
 
 	UPROPERTY(VisibleAnywhere)
 	bool bCanAttack { true };
@@ -39,5 +51,7 @@ public:
 
 	void ComboAttack();
 
+	UFUNCTION(BlueprintCallable)
+	void HandleResetAttack();
 		
 };

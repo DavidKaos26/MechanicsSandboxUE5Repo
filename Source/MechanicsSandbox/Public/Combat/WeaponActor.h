@@ -14,12 +14,18 @@ class MECHANICSSANDBOX_API AWeaponActor : public AActor
 public:	
 	AWeaponActor();
 
-private:
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+public:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	USceneComponent* RootComp;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	UStaticMeshComponent* WeaponMesh;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	USceneComponent* StartWeaponDamageLocation;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	USceneComponent* EndWeaponDamageLocation;
 
 protected:
 	virtual void BeginPlay() override;

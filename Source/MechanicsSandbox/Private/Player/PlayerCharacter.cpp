@@ -3,6 +3,7 @@
 #include "Camera/CameraComponent.h"
 #include "Quests/QuestComponent.h"
 #include "Combat/CombatComponent.h"
+#include "Combat/TraceComponent.h"
 
 
 APlayerCharacter::APlayerCharacter()
@@ -21,6 +22,7 @@ APlayerCharacter::APlayerCharacter()
 	//Actor Components
 	QuestComp = CreateDefaultSubobject<UQuestComponent>(TEXT("Quest Component"));
 	CombatComp = CreateDefaultSubobject<UCombatComponent>(TEXT("Combat Component"));
+ 	TraceComponent = CreateDefaultSubobject<UTraceComponent>(TEXT("Trace Component"));
 }
 
 void APlayerCharacter::BeginPlay()

@@ -6,6 +6,7 @@
 #include "Camera/CameraComponent.h"
 #include "Quests/QuestComponent.h"
 #include "Combat/CombatComponent.h"
+#include "Combat/TraceComponent.h"
 #include "PlayerCharacter.generated.h"
 
 UCLASS()
@@ -27,6 +28,9 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Actor Components")
 	UCombatComponent* CombatComp;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Actor Components")
+	UTraceComponent* TraceComponent; 
 
 protected:
 	virtual void BeginPlay() override;

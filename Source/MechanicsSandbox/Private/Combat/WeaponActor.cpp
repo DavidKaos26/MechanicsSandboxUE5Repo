@@ -12,6 +12,12 @@ AWeaponActor::AWeaponActor()
 
 	WeaponMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Weapon Mesh"));
 	WeaponMesh->SetupAttachment(RootComp);
+
+	StartWeaponDamageLocation = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Start Weapon Damage Location"));
+	StartWeaponDamageLocation->SetupAttachment(RootComp);
+
+	EndWeaponDamageLocation = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("End Weapon Damage Location"));
+	EndWeaponDamageLocation->SetupAttachment(RootComp);
 }
 
 void AWeaponActor::BeginPlay()

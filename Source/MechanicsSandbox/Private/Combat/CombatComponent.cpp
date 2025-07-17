@@ -1,7 +1,7 @@
 #include "Combat/CombatComponent.h"
 #include "Components/StaticMeshComponent.h"
 #include "Combat/WeaponActor.h"
-#include "Player/PlayerCharacter.h"
+#include "GameFramework/Character.h"
 #include "Components/PrimitiveComponent.h"
 
 
@@ -19,11 +19,13 @@ void UCombatComponent::BeginPlay()
 	{
 		CurrentWeapon = GetWorld()->SpawnActor<AWeaponActor>(WeaponClass);
 
-		CharacterRef = Cast<APlayerCharacter>(GetOwner());
+		CharacterRef = Cast<ACharacter>(GetOwner());
+
 		if(CharacterRef)
 		{
 			CurrentWeapon->AttachToComponent(CharacterRef->GetMesh(), FAttachmentTransformRules::KeepRelativeTransform, TEXT("Weapon_Socket"));
 			CurrentWeapon->SetOwner(CharacterRef);
+			OnWeaponAssignedDelegate.Broadcast(CurrentWeapon);
 		}
 	}
 }
@@ -50,9 +52,14 @@ void UCombatComponent::ComboAttack()
 
 	if (CharacterRef)
 	{
-		CharacterRef->PlayAnimMontage(AttackMontages[ComboCounter]);
+		CharacterRef->PlayAnimMontage(AttackMontages[ComboCounter], AnimationsPlayRate);
 	}
-	
 }
+
+void UCombatComponent::HandleResetAttack()
+{
+	bCanAttack = true;
+}
+
 
 
