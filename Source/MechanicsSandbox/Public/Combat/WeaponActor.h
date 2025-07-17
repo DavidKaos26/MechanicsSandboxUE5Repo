@@ -27,6 +27,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	USceneComponent* EndWeaponDamageLocation;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float WeaponDamage { 10.0f };
+
 protected:
 	virtual void BeginPlay() override;
 

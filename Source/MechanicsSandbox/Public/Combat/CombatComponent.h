@@ -27,7 +27,7 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 	AWeaponActor* CurrentWeapon;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Replicated)
 	TArray<UAnimMontage*> AttackMontages;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
@@ -53,5 +53,13 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void HandleResetAttack();
+
+	void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
+
+	UFUNCTION(Server, Reliable)
+	void ServerPlayMontage(UAnimMontage* MontageToPlay, float PlayRate);
+
+	UFUNCTION(NetMulticast, Reliable)
+	void MulticastPlayMontage(UAnimMontage* MontageToPlay, float PlayRate);
 		
 };

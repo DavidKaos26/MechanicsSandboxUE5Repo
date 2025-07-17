@@ -1,6 +1,7 @@
 #include "Combat/TraceComponent.h"
 #include "Kismet/KismetSystemLibrary.h"
 #include "Kismet/KismetMathLibrary.h"
+#include "Engine/DamageEvents.h"
 
 
 UTraceComponent::UTraceComponent()
@@ -19,10 +20,7 @@ void UTraceComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActor
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
-	if (!CurrentWeapon)
-	{
-		return;
-	}	
+	if (!CurrentWeapon) { return; }	
 
 	StartTraceLocation = CurrentWeapon->StartWeaponDamageLocation->GetComponentLocation();
 	EndTraceLocation = CurrentWeapon->EndWeaponDamageLocation->GetComponentLocation();
@@ -79,6 +77,27 @@ void UTraceComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActor
 			2.0f
 		);
 	}
+
+	if (OutResults.Num() == 0){ return; }
+/* 
+	if (CurrentWeapon)
+	{
+		FDamageEvent TargetAttackEvent;
+
+		for (const FHitResult& Hit : OutResults)
+		{
+			AActor* TargetActor { Hit.GetActor() };
+			if (TargetActor)
+			{
+				TargetActor->TakeDamage(
+					CurrentWeapon->WeaponDamage,
+					TargetAttackEvent,
+					GetOwner()->GetInstigatorController(),
+					GetOwner()
+				);
+			}
+		}
+	} */
 
 }
 

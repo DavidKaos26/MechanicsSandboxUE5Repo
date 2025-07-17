@@ -7,7 +7,7 @@
 void AMainPlayerController::ShowQuestAssignerUI() 
 {
     QuestAssignerUIWidget = CreateWidget<UQuestAssignerUI>(this, QuestAssignerUIWidgetClass);
-    if (QuestAssignerUIWidget)
+    if (QuestAssignerUIWidget && IsLocalController())
     {
         QuestAssignerUIWidget->AddToViewport();
         bShowMouseCursor = true;

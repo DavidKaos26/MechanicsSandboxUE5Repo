@@ -49,7 +49,7 @@ void AQuestNPC::OnInteractionSphereBeginOverlap(UPrimitiveComponent* OverlappedC
     if (Pawn)
     {
         AMainPlayerController* MainPlayerController = Cast<AMainPlayerController>(Pawn->GetController());
-        if (MainPlayerController && QuestDataToAssign)
+        if (MainPlayerController && QuestDataToAssign && MainPlayerController->IsLocalController())
         {
             MainPlayerController->ShowQuestAssignerUI();
             MainPlayerController->SetQuestAssignerUIInfo(QuestDataToAssign);
