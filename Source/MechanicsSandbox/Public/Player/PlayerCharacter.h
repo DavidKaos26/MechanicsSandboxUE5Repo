@@ -7,6 +7,7 @@
 #include "Quests/QuestComponent.h"
 #include "Combat/CombatComponent.h"
 #include "Combat/TraceComponent.h"
+#include "Characters/StatsComponent.h"
 #include "PlayerCharacter.generated.h"
 
 UCLASS()
@@ -31,6 +32,9 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Actor Components")
 	UTraceComponent* TraceComponent; 
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Actor Components")
+	UStatsComponent* StatComponent; 
 
 protected:
 	virtual void BeginPlay() override;

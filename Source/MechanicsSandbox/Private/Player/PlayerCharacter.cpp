@@ -4,6 +4,7 @@
 #include "Quests/QuestComponent.h"
 #include "Combat/CombatComponent.h"
 #include "Combat/TraceComponent.h"
+#include "Characters/StatsComponent.h"
 
 
 APlayerCharacter::APlayerCharacter()
@@ -23,6 +24,7 @@ APlayerCharacter::APlayerCharacter()
 	QuestComp = CreateDefaultSubobject<UQuestComponent>(TEXT("Quest Component"));
 	CombatComp = CreateDefaultSubobject<UCombatComponent>(TEXT("Combat Component"));
  	TraceComponent = CreateDefaultSubobject<UTraceComponent>(TEXT("Trace Component"));
+	StatComponent = CreateDefaultSubobject<UStatsComponent>(TEXT("Stats Component"));
 }
 
 void APlayerCharacter::BeginPlay()

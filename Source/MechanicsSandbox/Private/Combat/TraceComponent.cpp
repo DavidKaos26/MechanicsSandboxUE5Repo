@@ -20,6 +20,8 @@ void UTraceComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActor
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
+	if (!bIsAttacking) { return; }
+
 	if (!CurrentWeapon) { return; }	
 
 	StartTraceLocation = CurrentWeapon->StartWeaponDamageLocation->GetComponentLocation();
@@ -79,7 +81,7 @@ void UTraceComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActor
 	}
 
 	if (OutResults.Num() == 0){ return; }
-/* 
+
 	if (CurrentWeapon)
 	{
 		FDamageEvent TargetAttackEvent;
@@ -89,15 +91,25 @@ void UTraceComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActor
 			AActor* TargetActor { Hit.GetActor() };
 			if (TargetActor)
 			{
+				if (TargetsToIgnore.Contains(TargetActor)) { continue; }
+
 				TargetActor->TakeDamage(
 					CurrentWeapon->WeaponDamage,
 					TargetAttackEvent,
 					GetOwner()->GetInstigatorController(),
 					GetOwner()
 				);
+
+				TargetsToIgnore.AddUnique(TargetActor);
 			}
 		}
-	} */
+	}
 
 }
+
+void UTraceComponent::HandleResetAttack()
+{
+	TargetsToIgnore.Empty();
+}
+
 

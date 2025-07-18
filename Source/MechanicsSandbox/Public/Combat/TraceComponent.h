@@ -29,11 +29,18 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 	AWeaponActor* CurrentWeapon;
 
+	TArray<AActor*> TargetsToIgnore;
+
+	UPROPERTY(VisibleAnywhere)
+	bool bIsAttacking { false };
+
 protected:
 	virtual void BeginPlay() override;
 
 public:	
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
+	UFUNCTION(BlueprintCallable)
+	void HandleResetAttack();
 		
 };
