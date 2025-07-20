@@ -36,6 +36,11 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Actor Components")
 	UStatsComponent* StatComponent; 
 
+	float StartingSpeed { 0.0f };
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float SprintSpeed { 700.0f };
+
 protected:
 	virtual void BeginPlay() override;
 
@@ -44,6 +49,8 @@ protected:
 	void Turn(float Value);
 	void LookUp(float Value);
 	void Attack();
+	void Sprint();
+	void StopSprint();
 
 public:	
 	virtual void Tick(float DeltaTime) override;

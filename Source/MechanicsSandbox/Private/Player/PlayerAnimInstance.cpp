@@ -3,7 +3,19 @@
 #include "GameFramework/Character.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "KismetAnimationLibrary.h"
+#include "Player/PlayerCharacter.h"
 
+
+void UPlayerAnimInstance::NativeBeginPlay()
+{
+    Super::NativeBeginPlay();
+
+    APawn* PawnRef { TryGetPawnOwner() };
+
+    if (!IsValid(PawnRef)) { return; }
+
+    PlayerCharacterRef = Cast<APlayerCharacter>(PawnRef);
+}
 
 void UPlayerAnimInstance::UpdateVelocity()
 {
@@ -36,5 +48,6 @@ void UPlayerAnimInstance::UpdateIsJumping()
     if (!IsValid(Character)) { return; }
 
     bIsFalling = Character->GetCharacterMovement()->IsFalling();
-
 }
+
+

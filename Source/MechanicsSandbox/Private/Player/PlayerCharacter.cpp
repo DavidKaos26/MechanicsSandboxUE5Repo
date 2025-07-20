@@ -5,6 +5,7 @@
 #include "Combat/CombatComponent.h"
 #include "Combat/TraceComponent.h"
 #include "Characters/StatsComponent.h"
+#include "GameFramework/CharacterMovementComponent.h"
 
 
 APlayerCharacter::APlayerCharacter()
@@ -30,7 +31,9 @@ APlayerCharacter::APlayerCharacter()
 void APlayerCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
+	StartingSpeed = GetCharacterMovement()->MaxWalkSpeed;
+
 }
 
 void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -39,6 +42,8 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 
 	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ACharacter::Jump);
 	PlayerInputComponent->BindAction("Attack", IE_Pressed, this, &APlayerCharacter::Attack);
+	PlayerInputComponent->BindAction("Sprint", IE_Pressed, this, &APlayerCharacter::Sprint);
+	PlayerInputComponent->BindAction("Sprint", IE_Released, this, &APlayerCharacter::StopSprint);
 
 	PlayerInputComponent->BindAxis("MoveForward", this, &APlayerCharacter::MoveForward);
 	PlayerInputComponent->BindAxis("MoveRight", this, &APlayerCharacter::MoveRight);
@@ -91,5 +96,16 @@ void APlayerCharacter::Attack()
 		CombatComp->ComboAttack();
 	}
 }
+
+void APlayerCharacter::Sprint()
+{
+	GetCharacterMovement()->MaxWalkSpeed = SprintSpeed;
+}
+
+void APlayerCharacter::StopSprint()
+{
+	GetCharacterMovement()->MaxWalkSpeed = StartingSpeed;
+}
+
 
 
