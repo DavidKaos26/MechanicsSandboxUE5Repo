@@ -24,6 +24,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TSubclassOf<AWeaponActor> WeaponClass;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FName WeaponSocketName;
+
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 	AWeaponActor* CurrentWeapon;
 

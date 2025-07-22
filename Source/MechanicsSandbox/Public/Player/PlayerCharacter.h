@@ -52,6 +52,12 @@ protected:
 	void Sprint();
 	void StopSprint();
 
+	UFUNCTION(Server, Reliable)
+	void Server_StartSprinting();
+
+	UFUNCTION(Server, Reliable)
+	void Server_StopSprinting();
+
 public:	
 	virtual void Tick(float DeltaTime) override;
 

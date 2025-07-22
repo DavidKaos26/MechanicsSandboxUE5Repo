@@ -4,6 +4,7 @@
 #include "GameFramework/Character.h"
 #include "Combat/CombatComponent.h"
 #include "Characters/StatsComponent.h"
+#include "Combat/TraceComponent.h"
 #include "EnemyCharacter.generated.h"
 
 UCLASS()
@@ -19,6 +20,9 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Actor Components")
 	UCombatComponent* CombatComp;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Actor Components")
+	UTraceComponent* TraceComp;
 
 protected:
 	virtual void BeginPlay() override;

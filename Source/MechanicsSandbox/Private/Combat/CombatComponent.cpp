@@ -24,9 +24,9 @@ void UCombatComponent::BeginPlay()
 
 		CharacterRef = Cast<ACharacter>(GetOwner());
 
-		if(CharacterRef)
+		if(CharacterRef && !WeaponSocketName.IsNone())
 		{
-			CurrentWeapon->AttachToComponent(CharacterRef->GetMesh(), FAttachmentTransformRules::KeepRelativeTransform, TEXT("Weapon_Socket"));
+			CurrentWeapon->AttachToComponent(CharacterRef->GetMesh(), FAttachmentTransformRules::KeepRelativeTransform, WeaponSocketName);
 			CurrentWeapon->SetOwner(CharacterRef);
 			OnWeaponAssignedDelegate.Broadcast(CurrentWeapon);
 		}

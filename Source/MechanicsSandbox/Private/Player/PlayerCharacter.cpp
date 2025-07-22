@@ -99,13 +99,43 @@ void APlayerCharacter::Attack()
 
 void APlayerCharacter::Sprint()
 {
-	GetCharacterMovement()->MaxWalkSpeed = SprintSpeed;
+	//GetCharacterMovement()->MaxWalkSpeed = SprintSpeed;
+
+	if (HasAuthority())
+	{
+		GetCharacterMovement()->MaxWalkSpeed = SprintSpeed;
+	}
+	else
+	{
+		Server_StartSprinting();
+	}
 }
 
 void APlayerCharacter::StopSprint()
 {
-	GetCharacterMovement()->MaxWalkSpeed = StartingSpeed;
+	//GetCharacterMovement()->MaxWalkSpeed = StartingSpeed;
+
+	if (HasAuthority())
+	{
+		GetCharacterMovement()->MaxWalkSpeed = StartingSpeed;
+	}
+	else
+	{
+		Server_StopSprinting();
+	}
 }
+
+void APlayerCharacter::Server_StartSprinting_Implementation()
+{
+    GetCharacterMovement()->MaxWalkSpeed = SprintSpeed; // Example: 600.f
+}
+
+void APlayerCharacter::Server_StopSprinting_Implementation()
+{
+    GetCharacterMovement()->MaxWalkSpeed = StartingSpeed; // Example: 300.f
+}
+
+
 
 
 
