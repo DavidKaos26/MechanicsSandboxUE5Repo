@@ -5,6 +5,9 @@
 #include "Combat/CombatComponent.h"
 #include "Characters/StatsComponent.h"
 #include "Combat/TraceComponent.h"
+#include "Characters/EEnemyState.h"
+#include "BehaviorTree/BlackboardComponent.h"
+#include "AIController.h"
 #include "EnemyCharacter.generated.h"
 
 UCLASS()
@@ -24,6 +27,13 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Actor Components")
 	UTraceComponent* TraceComp;
 
+	UPROPERTY(EditAnywhere)
+	TEnumAsByte<EEnemyState> InitialState;
+
+	AAIController* ControllerRef;
+
+	UBlackboardComponent* BlackboardComponent;
+
 protected:
 	virtual void BeginPlay() override;
 
@@ -31,5 +41,10 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
+	void Attack();
+
+	UFUNCTION(BlueprintCallable)
+	void DetectPawn(APawn* PawnDetected, APawn* PawnToDetect);
 
 };

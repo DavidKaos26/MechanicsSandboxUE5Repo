@@ -80,7 +80,7 @@ void UTraceComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActor
 		);
 	}
 
-	if (OutResults.Num() == 0){ return; }
+	if (OutResults.Num() == 0) { return; }
 
 	if (CurrentWeapon)
 	{
