@@ -30,8 +30,6 @@ void UStatsComponent::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutL
 void UStatsComponent::OnRep_HealthRep()
 {
 	Stats[EStat::Health] = HealthRep;
-
-	GEngine->AddOnScreenDebugMessage(10, 3.0, FColor::Blue, TEXT("Health variable was Replicated!!"));
 }
 
 void UStatsComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
@@ -49,13 +47,6 @@ void UStatsComponent::ReduceHealth(float Amount, AActor* Opponent)
 		HealthRep, 
 		0.0f, 
 		Stats[EStat::MaxHealth]
-	);
-
-	GEngine->AddOnScreenDebugMessage(
-		9, 
-		4.0f, 
-		FColor::Green, 
-		FString::Printf(TEXT("Health is now: %f"), HealthRep)
 	);
 }
 

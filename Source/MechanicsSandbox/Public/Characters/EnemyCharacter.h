@@ -34,6 +34,8 @@ public:
 
 	UBlackboardComponent* BlackboardComponent;
 
+	APawn* PawnTarget;
+
 protected:
 	virtual void BeginPlay() override;
 

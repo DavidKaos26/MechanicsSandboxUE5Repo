@@ -20,30 +20,33 @@ void AEnemyCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
-	FTimerHandle MyTimerHandle;
+	if (HasAuthority())
+	{
+		ControllerRef = GetController<AAIController>();
 
-	GetWorld()->GetTimerManager().SetTimer(
-		MyTimerHandle,          
-        this,                   
-        &AEnemyCharacter::Attack,  
-        2.0f,                   
-        true                    
-	);
+		if (!ControllerRef) { return; }
 
-	ControllerRef = GetController<AAIController>();
+		BlackboardComponent = ControllerRef->GetBlackboardComponent();
 
-	BlackboardComponent = ControllerRef->GetBlackboardComponent();
-	
-	BlackboardComponent->SetValueAsEnum(
-		TEXT("CurrentState"), 
-		InitialState
-	);
-	
+		if (!BlackboardComponent) { return; }
+		
+		BlackboardComponent->SetValueAsEnum(
+			TEXT("CurrentState"), 
+			InitialState
+		);
+	}
 }
 
 void AEnemyCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
+	if (!PawnTarget) { return; }
+
+	BlackboardComponent->SetValueAsVector(
+		TEXT("CurrentTargetLocation"),
+		PawnTarget->GetActorLocation()
+	);
 }
 
 void AEnemyCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -61,18 +64,18 @@ void AEnemyCharacter::Attack()
 
 void AEnemyCharacter::DetectPawn(APawn* PawnDetected, APawn* PawnToDetect)
 {	
+	if (!BlackboardComponent) { return; }
+
 	EEnemyState CurrentState {
 		static_cast<EEnemyState>(BlackboardComponent->GetValueAsEnum(TEXT("CurrentState")))
 	};
 
 	if(PawnDetected != PawnToDetect || CurrentState != EEnemyState::Idle) { return; }
 
-	UE_LOG(LogTemp ,Warning, TEXT("Detect Pawn function called!!"));
+	PawnTarget = PawnDetected;
 
 	BlackboardComponent->SetValueAsEnum(
 		TEXT("CurrentState"), 
 		EEnemyState::Approach
 	);	
 }
-
-
