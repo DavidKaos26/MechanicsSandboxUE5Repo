@@ -6,6 +6,11 @@
 #include "StatsComponent.generated.h"
 
 
+DECLARE_DYNAMIC_MULTICAST_SPARSE_DELEGATE(
+	FOnHealthUpdatedSignature,
+	UStatsComponent, OnHealthUpdatedDelegate	
+);
+
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class MECHANICSSANDBOX_API UStatsComponent : public UActorComponent
 {
@@ -21,6 +26,8 @@ public:
     UPROPERTY(ReplicatedUsing = OnRep_HealthRep)
     float HealthRep;
 
+	UPROPERTY(BlueprintAssignable)
+	FOnHealthUpdatedSignature OnHealthUpdatedDelegate;
 	
 protected:
 	virtual void BeginPlay() override;
@@ -35,5 +42,11 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void ReduceHealth(float Amount, AActor* Opponent);
+
+	UFUNCTION(BlueprintPure)
+	float GetHealthPercentageDecimal();
+
+	UFUNCTION(BlueprintPure)
+	float GetHealth();
 
 };

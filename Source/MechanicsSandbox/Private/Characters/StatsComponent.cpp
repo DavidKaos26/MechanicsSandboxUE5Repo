@@ -30,6 +30,10 @@ void UStatsComponent::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutL
 void UStatsComponent::OnRep_HealthRep()
 {
 	Stats[EStat::Health] = HealthRep;
+
+	GEngine->AddOnScreenDebugMessage(0, 4.0f, FColor::Blue, FString::Printf(TEXT("HealthRep: %.1f"), HealthRep));
+
+	OnHealthUpdatedDelegate.Broadcast();
 }
 
 void UStatsComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
@@ -48,5 +52,15 @@ void UStatsComponent::ReduceHealth(float Amount, AActor* Opponent)
 		0.0f, 
 		Stats[EStat::MaxHealth]
 	);
+}
+
+float UStatsComponent::GetHealthPercentageDecimal()
+{
+	return HealthRep / Stats[EStat::MaxHealth];
+}
+
+float UStatsComponent::GetHealth()
+{
+	return HealthRep;
 }
 

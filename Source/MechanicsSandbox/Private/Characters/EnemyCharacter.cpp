@@ -5,6 +5,8 @@
 #include "Characters/EEnemyState.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "AIController.h"
+#include "Components/WidgetComponent.h"
+#include "Player/PlayerCharacter.h"
 
 
 AEnemyCharacter::AEnemyCharacter()
@@ -14,6 +16,8 @@ AEnemyCharacter::AEnemyCharacter()
 	StatComp = CreateDefaultSubobject<UStatsComponent>(TEXT("Stats Component"));
 	CombatComp = CreateDefaultSubobject<UCombatComponent>(TEXT("Combat Component"));
 	TraceComp = CreateDefaultSubobject<UTraceComponent>(TEXT("TraceComponent"));
+	HealthBarOverHeadWidget = CreateDefaultSubobject<UWidgetComponent>("HealthBarOverHeadWidget");
+	HealthBarOverHeadWidget->SetupAttachment(RootComponent);
 }
 
 void AEnemyCharacter::BeginPlay()
@@ -62,7 +66,7 @@ void AEnemyCharacter::Attack()
 	}
 }
 
-void AEnemyCharacter::DetectPawn(APawn* PawnDetected, APawn* PawnToDetect)
+void AEnemyCharacter::DetectPawn(APawn* PawnDetected)
 {	
 	if (!BlackboardComponent) { return; }
 
@@ -70,7 +74,9 @@ void AEnemyCharacter::DetectPawn(APawn* PawnDetected, APawn* PawnToDetect)
 		static_cast<EEnemyState>(BlackboardComponent->GetValueAsEnum(TEXT("CurrentState")))
 	};
 
-	if(PawnDetected != PawnToDetect || CurrentState != EEnemyState::Idle) { return; }
+	APlayerCharacter* DetectedCharacter = Cast<APlayerCharacter>(PawnDetected);
+
+	if(!DetectedCharacter || CurrentState != EEnemyState::Idle) { return; }
 
 	PawnTarget = PawnDetected;
 

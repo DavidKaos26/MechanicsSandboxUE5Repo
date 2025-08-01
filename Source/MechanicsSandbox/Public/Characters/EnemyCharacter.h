@@ -8,6 +8,7 @@
 #include "Characters/EEnemyState.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "AIController.h"
+#include "Components/WidgetComponent.h"
 #include "EnemyCharacter.generated.h"
 
 UCLASS()
@@ -26,6 +27,9 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Actor Components")
 	UTraceComponent* TraceComp;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Actor Components")
+	UWidgetComponent* HealthBarOverHeadWidget;
 
 	UPROPERTY(EditAnywhere)
 	TEnumAsByte<EEnemyState> InitialState;
@@ -47,6 +51,6 @@ public:
 	void Attack();
 
 	UFUNCTION(BlueprintCallable)
-	void DetectPawn(APawn* PawnDetected, APawn* PawnToDetect);
+	void DetectPawn(APawn* PawnDetected);
 
 };
