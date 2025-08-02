@@ -14,10 +14,19 @@ void UStatsComponent::BeginPlay()
 	SetIsReplicatedByDefault(true);
 
 	// Server initializes replicated values
-    if (GetOwnerRole() == ROLE_Authority)
+    if (GetOwner()->HasAuthority())
     {
         HealthRep = Stats[EStat::Health];
+		FTimerHandle TimerHandle;
+
+		GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &UStatsComponent::InitializeHealthUpdate, 0.3f, false);
+
     }
+}
+
+void UStatsComponent::InitializeHealthUpdate()
+{
+	OnHealthUpdatedDelegate.Broadcast(); //Run on server
 }
 
 void UStatsComponent::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
@@ -31,9 +40,7 @@ void UStatsComponent::OnRep_HealthRep()
 {
 	Stats[EStat::Health] = HealthRep;
 
-	GEngine->AddOnScreenDebugMessage(0, 4.0f, FColor::Blue, FString::Printf(TEXT("HealthRep: %.1f"), HealthRep));
-
-	OnHealthUpdatedDelegate.Broadcast();
+	OnHealthUpdatedDelegate.Broadcast(); //Run on clients
 }
 
 void UStatsComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
@@ -52,6 +59,18 @@ void UStatsComponent::ReduceHealth(float Amount, AActor* Opponent)
 		0.0f, 
 		Stats[EStat::MaxHealth]
 	);
+
+	if (GetOwner()->HasAuthority())
+	{
+		//Run on server, this delegate is also called on OnRep_HealthRep() once variable is replicated so that it applies to clients as well
+		OnHealthUpdatedDelegate.Broadcast(); 
+	}
+
+	if (HealthRep <= 0.0f)
+	{
+		GEngine->AddOnScreenDebugMessage(3, 6.0f, FColor::Orange, TEXT("Health has reached less than 0 now!"));
+		OnHealthReachesZeroDelegate.Broadcast();
+	}
 }
 
 float UStatsComponent::GetHealthPercentageDecimal()

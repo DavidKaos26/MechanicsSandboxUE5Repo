@@ -7,13 +7,14 @@
 #include "AIController.h"
 #include "Components/WidgetComponent.h"
 #include "Player/PlayerCharacter.h"
+#include "Net/UnrealNetwork.h"
 
 
 AEnemyCharacter::AEnemyCharacter()
 {
 	PrimaryActorTick.bCanEverTick = true;
 
-	StatComp = CreateDefaultSubobject<UStatsComponent>(TEXT("Stats Component"));
+	StatsComp = CreateDefaultSubobject<UStatsComponent>(TEXT("Stats Comp"));
 	CombatComp = CreateDefaultSubobject<UCombatComponent>(TEXT("Combat Component"));
 	TraceComp = CreateDefaultSubobject<UTraceComponent>(TEXT("TraceComponent"));
 	HealthBarOverHeadWidget = CreateDefaultSubobject<UWidgetComponent>("HealthBarOverHeadWidget");
@@ -39,6 +40,13 @@ void AEnemyCharacter::BeginPlay()
 			InitialState
 		);
 	}
+}
+
+void AEnemyCharacter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+
+	DOREPLIFETIME(AEnemyCharacter, DeathMontage);
 }
 
 void AEnemyCharacter::Tick(float DeltaTime)
@@ -84,4 +92,12 @@ void AEnemyCharacter::DetectPawn(APawn* PawnDetected)
 		TEXT("CurrentState"), 
 		EEnemyState::Approach
 	);	
+}
+
+void AEnemyCharacter::HandleDeath()
+{
+	if (DeathMontage)
+	{
+		PlayAnimMontage(DeathMontage);
+	}
 }

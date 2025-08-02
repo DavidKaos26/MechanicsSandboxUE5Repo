@@ -9,6 +9,7 @@
 #include "BehaviorTree/BlackboardComponent.h"
 #include "AIController.h"
 #include "Components/WidgetComponent.h"
+#include "Animation/AnimMontage.h"
 #include "EnemyCharacter.generated.h"
 
 UCLASS()
@@ -20,8 +21,8 @@ public:
 	AEnemyCharacter();
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Actor Components")
-	UStatsComponent* StatComp; 
-
+	UStatsComponent* StatsComp;
+	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Actor Components")
 	UCombatComponent* CombatComp;
 
@@ -40,6 +41,9 @@ public:
 
 	APawn* PawnTarget;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Replicated, Category = "Animations")
+	UAnimMontage* DeathMontage;
+
 protected:
 	virtual void BeginPlay() override;
 
@@ -48,9 +52,14 @@ public:
 
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+	void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
+
 	void Attack();
 
 	UFUNCTION(BlueprintCallable)
 	void DetectPawn(APawn* PawnDetected);
+
+	UFUNCTION(BlueprintCallable)
+	void HandleDeath();
 
 };

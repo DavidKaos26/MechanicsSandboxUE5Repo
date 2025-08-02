@@ -11,6 +11,11 @@ DECLARE_DYNAMIC_MULTICAST_SPARSE_DELEGATE(
 	UStatsComponent, OnHealthUpdatedDelegate	
 );
 
+DECLARE_DYNAMIC_MULTICAST_SPARSE_DELEGATE(
+	FOnHealthReachesZeroSignature,
+	UStatsComponent, OnHealthReachesZeroDelegate	
+);
+
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class MECHANICSSANDBOX_API UStatsComponent : public UActorComponent
 {
@@ -23,11 +28,14 @@ public:
 	TMap<TEnumAsByte<EStat>, float> Stats;
 
 	// Replicated stat values
-    UPROPERTY(ReplicatedUsing = OnRep_HealthRep)
+    UPROPERTY(BlueprintReadWrite, ReplicatedUsing = OnRep_HealthRep)
     float HealthRep;
 
 	UPROPERTY(BlueprintAssignable)
 	FOnHealthUpdatedSignature OnHealthUpdatedDelegate;
+
+	UPROPERTY(BlueprintAssignable)
+	FOnHealthReachesZeroSignature OnHealthReachesZeroDelegate;
 	
 protected:
 	virtual void BeginPlay() override;
@@ -48,5 +56,8 @@ public:
 
 	UFUNCTION(BlueprintPure)
 	float GetHealth();
+
+	UFUNCTION()
+	void InitializeHealthUpdate();
 
 };
