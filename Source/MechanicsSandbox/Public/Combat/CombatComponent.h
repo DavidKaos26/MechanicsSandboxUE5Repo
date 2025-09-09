@@ -5,12 +5,14 @@
 #include "Combat/WeaponActor.h"
 #include "Animation/AnimMontage.h"
 #include "GameFramework/Character.h"
+#include "Components/SkeletalMeshComponent.h"
 #include "CombatComponent.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_SPARSE_DELEGATE_OneParam(
-	FOnWeaponAssignedSignature,
-	UCombatComponent, OnWeaponAssignedDelegate,
-	AWeaponActor*, Weapon
+    FOnWeaponAssignedSignature,   
+    UCombatComponent,             
+    OnWeaponAssignedDelegate,     
+    AWeaponActor*, WeaponActor          
 );
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
@@ -21,13 +23,13 @@ class MECHANICSSANDBOX_API UCombatComponent : public UActorComponent
 public:	
 	UCombatComponent();
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapon")
 	TSubclassOf<AWeaponActor> WeaponClass;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapon")
 	FName WeaponSocketName;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Weapon")
 	AWeaponActor* CurrentWeapon;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Replicated)

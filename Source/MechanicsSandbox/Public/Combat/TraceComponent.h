@@ -14,10 +14,7 @@ class MECHANICSSANDBOX_API UTraceComponent : public UActorComponent
 public:	
 	UTraceComponent();
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 	FVector StartTraceLocation;
-
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 	FVector EndTraceLocation;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
@@ -34,6 +31,23 @@ public:
 	UPROPERTY(VisibleAnywhere)
 	bool bIsAttacking { false };
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+	AWeaponActor* CurrentWeaponActor;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "No Weapon Actor")
+	FName Start;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "No Weapon Actor")
+	FName End;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "No Weapon Actor")
+	FName Rotation;
+
+	FQuat QuatRotation;
+
+	USkeletalMeshComponent* SkeletalComp;
+
+
 protected:
 	virtual void BeginPlay() override;
 
@@ -42,5 +56,8 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void HandleResetAttack();
+
+	UFUNCTION(BlueprintCallable)
+	void SetWeaponActor(AWeaponActor* WeaponActor);
 		
 };

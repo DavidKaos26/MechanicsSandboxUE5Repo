@@ -1,7 +1,9 @@
 #include "Combat/TraceComponent.h"
 #include "Kismet/KismetSystemLibrary.h"
 #include "Kismet/KismetMathLibrary.h"
+#include "Components/SkeletalMeshComponent.h"
 #include "Engine/DamageEvents.h"
+#include "Combat/WeaponActor.h"
 
 
 UTraceComponent::UTraceComponent()
@@ -9,12 +11,17 @@ UTraceComponent::UTraceComponent()
 	PrimaryComponentTick.bCanEverTick = true;
 }
 
-
 void UTraceComponent::BeginPlay()
 {
 	Super::BeginPlay();	
+
+	SkeletalComp = GetOwner()->FindComponentByClass<USkeletalMeshComponent>();
 }
 
+void UTraceComponent::SetWeaponActor(AWeaponActor* WeaponActor)
+{
+	CurrentWeaponActor = WeaponActor;
+}
 
 void UTraceComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
@@ -22,14 +29,32 @@ void UTraceComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActor
 
 	if (!bIsAttacking) { return; }
 
-	if (!CurrentWeapon) { return; }	
+	if (CurrentWeaponActor)
+	{
+		Start = NAME_None;
+		End = NAME_None;
 
-	StartTraceLocation = CurrentWeapon->StartWeaponDamageLocation->GetComponentLocation();
-	EndTraceLocation = CurrentWeapon->EndWeaponDamageLocation->GetComponentLocation();
+		StartTraceLocation = CurrentWeaponActor->StartWeaponDamageLocation->GetComponentLocation();
+		EndTraceLocation = CurrentWeaponActor->EndWeaponDamageLocation->GetComponentLocation();
+
+		FRotator ZeroRotation = FRotator::ZeroRotator;
+		QuatRotation = ZeroRotation.Quaternion();
+	}
+	else if(!Start.IsNone() && !End.IsNone() && !Rotation.IsNone())
+	{
+		StartTraceLocation = SkeletalComp->GetSocketLocation(Start);
+		EndTraceLocation = SkeletalComp->GetSocketLocation(End);
+		QuatRotation = SkeletalComp->GetSocketQuaternion(Rotation);
+	}
+	else
+	{
+		return;
+	}
 
 	TArray<FHitResult> OutResults;
-	FRotator Rotation = FRotator::ZeroRotator;
-	FQuat QuatRotation = Rotation.Quaternion();
+
+	//FRotator Rotation = FRotator::ZeroRotator;
+	//FQuat QuatRotation = Rotation.Quaternion();
 
 	double WeaponDistance{
 		FVector::Distance(StartTraceLocation, EndTraceLocation)

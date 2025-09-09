@@ -18,11 +18,11 @@ void UCombatComponent::BeginPlay()
 
 	SetIsReplicatedByDefault(true);
 
+	CharacterRef = Cast<ACharacter>(GetOwner());
+
 	if(WeaponClass)
 	{
 		CurrentWeapon = GetWorld()->SpawnActor<AWeaponActor>(WeaponClass);
-
-		CharacterRef = Cast<ACharacter>(GetOwner());
 
 		if(CharacterRef && !WeaponSocketName.IsNone())
 		{
@@ -54,6 +54,8 @@ void UCombatComponent::ComboAttack()
 
 	ComboCounter++;
 
+	GEngine->AddOnScreenDebugMessage(9, 5.0f, FColor::Blue, TEXT("Combo attack called"));
+
 	if (ComboCounter >= AttackMontages.Num())
 	{
 		ComboCounter = 0;
@@ -64,6 +66,7 @@ void UCombatComponent::ComboAttack()
 		if (CharacterRef->IsLocallyControlled())
 		{
 			ServerPlayMontage(AttackMontages[ComboCounter], AnimationsPlayRate);
+			GEngine->AddOnScreenDebugMessage(10, 5.0f, FColor::Blue, TEXT("Monatge playing"));
 		}
 	}
 }
